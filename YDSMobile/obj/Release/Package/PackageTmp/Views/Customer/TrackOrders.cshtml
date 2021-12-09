@@ -1,0 +1,402 @@
+﻿@using EMALLS.Models
+@model EMALLS.Models.TrackOrdersModel
+@{
+    ViewBag.Title = "Requests";
+    Layout = "~/Views/Customer/_Layout_Customer.cshtml";
+}
+<!--begin::Form-->
+<div class="flex-row-fluid ml-lg-8">
+    <!-- begin panel-heading -->
+
+    <div class="card-header py-3">
+        <div class="card-title align-items-start flex-column">
+            <h3 class="card-label font-weight-bolder text-dark">Track Your Order</h3>
+        </div>
+        <div class="example-preview">
+            <ul class="nav nav-pills nav-fill nav-success">
+                <li class="nav-item">
+                    @if (ViewData["status"].ToString() == "pending" && ViewData["status"].ToString().Length > 0)
+                    {
+                        <a class="nav-link active" id="home-tab-4" data-toggle="tab" onclick="RefreshPage('pending')">
+                            <span class="nav-icon">
+                                <i class="flaticon-time-1"></i>
+                            </span>
+                            <span class="nav-text font-weight-bold">Shopping in Progress</span>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="nav-link " id="home-tab-4" data-toggle="tab" onclick="RefreshPage('pending')">
+                            <span class="nav-icon">
+                                <i class="flaticon-time-1"></i>
+                            </span>
+                            <span class="nav-text font-weight-bold">Shopping in Progress</span>
+                        </a>
+                    }
+                </li>
+                <li class="nav-item">
+                    @if (ViewData["status"].ToString() == "delivery" && ViewData["status"].ToString().Length > 0)
+                    {
+                        <a class="nav-link active"  id="profile-tab-4" data-toggle="tab" onclick="RefreshPage('delivery')" aria-controls="profile">
+                            <span class="nav-icon">
+                                <i class="flaticon-truck"></i>
+                            </span>
+                            <span class="nav-text  font-weight-bold">For Delivery/Pickup</span>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="nav-link " id="profile-tab-4" data-toggle="tab" onclick="RefreshPage('delivery')" aria-controls="profile">
+                            <span class="nav-icon">
+                                <i class="flaticon-truck"></i>
+                            </span>
+                            <span class="nav-text  font-weight-bold">For Delivery/Pickup</span>
+                        </a>
+                    }
+                </li>
+                <li class="nav-item">
+                    @if (ViewData["status"].ToString() == "completed" && ViewData["status"].ToString().Length > 0)
+                    {
+                        <a class="nav-link active" id="contact-tab-4" data-toggle="tab" onclick="RefreshPage('completed')" aria-controls="contact">
+                            <span class="nav-icon">
+                                <i class="flaticon-list-3"></i>
+                            </span>
+                            <span class="nav-text font-weight-bold ">Completed</span>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="nav-link" id="contact-tab-4" data-toggle="tab" onclick="RefreshPage('completed')" aria-controls="contact">
+                            <span class="nav-icon">
+                                <i class="flaticon-list-3"></i>
+                            </span>
+                            <span class="nav-text font-weight-bold ">Completed</span>
+                        </a>
+                    }
+                </li>
+                <li class="nav-item">
+                    @if (ViewData["status"].ToString() == "cancelled" && ViewData["status"].ToString().Length > 0)
+                    {
+                        <a class="nav-link active" id="contact-tab-4" data-toggle="tab" onclick="RefreshPage('cancelled')" aria-controls="contact">
+                            <span class="nav-icon">
+                                <i class="flaticon-cancel"></i>
+                            </span>
+                            <span class="nav-text font-weight-bold">Cancelled</span>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="nav-link" id="contact-tab-4" data-toggle="tab" onclick="RefreshPage('cancelled')" aria-controls="contact">
+                            <span class="nav-icon">
+                                <i class="flaticon-cancel"></i>
+                            </span>
+                            <span class="nav-text font-weight-bold">Cancelled</span>
+                        </a>
+                    }
+                </li>
+            </ul>
+          </div>
+    </div>
+
+    <!-- end panel-heading -->
+    <!-- begin panel-body -->
+
+  
+        @foreach (var data in Model.TrackOrders)
+        {
+        <div class="card d-flex card-stretch ">
+            <div class="card-body  ">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card-custom">
+                            <!--begin::Body-->
+                            <div class="ribbon ribbon-right">
+                                @{
+
+                                    <div class="ribbon-target bg-gray-100 text-dark font-weight-bold" style="right: -2px;">Reference # @data.TCR_REQUESTID</div>
+
+                                }
+                                <br />
+                                <br />
+                            </div>
+                            <div class="ribbon ribbon-right">
+                                <h3 class="card-title">
+                                    <a href="#" class="btn btn-sm btn-success font-weight-bold mr-2 py-2 px-3 px-xxl-5 my-1">@data.LOCATION</a>
+                                    @if (data.TCR_STATUS == "PENDING")
+                                    {
+                                        <a href="#" class="btn btn-sm btn-warning font-weight-bold py-2 px-3 px-xxl-5 my-1">Shopping in Progress.</a>
+                                    }
+
+                                    @if (data.TCR_STATUS == "COMPLETED")
+                                    {
+                                        <a href="#" class="btn btn-sm btn-success font-weight-bold mr-2 py-2 px-3 px-xxl-5 my-1">@data.TCR_STATUS</a>
+                                    }
+
+                                </h3>
+                               
+
+
+                            </div>
+                            <div class="">
+                                <!--begin::Wrapper-->
+                                <div class=" justify-content-between flex-column">
+                                    <!--begin::Container-->
+                                    <div class="">
+                                        <!--begin::Header-->
+                                        <div class="">
+
+                                            <!--begin::Symbol-->
+                                            @*<div class="font-weight-bold text-dark-50 font-size-sm pb-6"> @data.RTD_TEAMNAME</div>
+        <div class="font-weight-bold text-dark-50 font-size-sm pb-6"> @data.DASHERNAME</div>
+        <div class="font-weight-bold text-dark-50 font-size-sm pb-6">@data.TCR_DELIVERYFEE</div>
+        <div class="font-weight-bold text-dark-50 font-size-sm pb-6"> @data.TCR_SHOPPING_FEE</div>
+        <div class="font-weight-bold text-dark-50 font-size-sm pb-6"> @data.TCR_DELIVERYFEE</div>
+        <div class="font-weight-bold text-dark-50 font-size-sm pb-6">@data.TCR_MODEOFTRANSFER</div>*@
+                                            @{
+                                                string laststorename = "";
+                                                IEnumerable<ItemStatusModel> ItemStatus = new List<ItemStatusModel> { data.ITEM_STATUS };
+                                                foreach (var status in ItemStatus)
+                                                {
+                                                    foreach (var store in status.ItemStatus.GroupBy(p => p.STORENAME))
+                                                    {
+
+                                                        foreach (var statusx in store)
+                                                        {
+
+                                                            {
+
+
+                                                                if (statusx.STORENAME != null)
+                                                                {
+                                                                    if (statusx.STORENAME.Length > 0 && statusx.STORENAME != laststorename)
+                                                                    {
+                                                                        <br />
+                                                                        <div class="d-flex align-items-center">
+                                                                            <span class="bullet bullet-bar bg-success align-self-stretch"></span>
+                                                                            <div class="d-flex align-items-center font-size-lg ">
+
+                                                                                &nbsp;@statusx.STORENAME
+                                                                            </div>
+                                                                        </div>
+
+
+                                                                    }
+                                                                    else if ((int)statusx.STORENAME.Length == 0 || statusx.STORENAME == null)
+                                                                    {
+                                                                        <p class="font-size-lg">
+                                                                            @statusx.STORENAME
+                                                                        </p>
+
+                                                                    }
+
+                                                                    laststorename = statusx.STORENAME;
+                                                                }
+                                                                else
+                                                                {
+                                                                    <br />
+                                                                    <div class="d-flex align-items-center">
+                                                                        <span class="bullet bullet-bar bg-success align-self-stretch"></span>
+                                                                        <div class="d-flex align-items-center font-size-lg ">
+
+                                                                            &nbsp;SPECIAL SHOPPING LIST
+                                                                        </div>
+                                                                    </div>
+                                                                    laststorename = "SPECIAL SHOPPING LIST";
+                                                                }
+
+                                                            }
+                                                            <br />
+                                                            <div class="card card-custom card-stretch mb-2 bg-gray-100  ">
+                                                                <div class="ribbon ribbon-right">
+                                                                    @{
+                                                                        if (statusx.TRI_BOUGHT == "0")
+                                                                        {
+                                                                            if (statusx.TRI_PURCHASE_STATUS.IndexOf("cancel") > 0)
+                                                                            {
+                                                                                <div class="ribbon-target bg-danger" style="top:10px; right: -2px;">@statusx.TRI_PURCHASE_STATUS</div>
+
+                                                                            }
+                                                                            else if (statusx.TRI_PURCHASE_STATUS.ToLower().IndexOf("unavailable") > 0)
+                                                                            {
+                                                                                <div class="ribbon-target bg-dark" style="top:10px; right: -2px;">@statusx.TRI_PURCHASE_STATUS</div>
+
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <div class="ribbon-target bg-warning" style="top:10px; right: -2px;">@statusx.TRI_PURCHASE_STATUS</div>
+                                                                            }
+                                                                        }
+
+                                                                        if (statusx.TRI_BOUGHT == "1")
+                                                                        {
+                                                                            <div class="ribbon-target bg-success" style="top:10px;right: -2px;">PURCHASED</div>
+                                                                        }
+                                                                    }
+                                                                </div>
+                                                                <br />
+                                                                <br />
+
+
+                                                                <div class="d-flex align-items-center p-5">
+                                                                    <div class="symbol symbol-60 symbol-xxl-100 mr-5 align-self-start align-self-xxl-center">
+                                                                        <img class="symbol-label" style="background-image:url('@statusx.ITEMIMAGE')"
+                                                                             onerror="ImgError(this)"></img>
+                                                                        <i class="symbol-badge bg-success"></i>
+                                                                    </div>
+                                                                    <div>
+                                                                        <a href="#" class="font-weight-bolder text-dark-75 text-hover-primary">@statusx.ITEMNAME</a>
+                                                                        <br />
+                                                                        @{
+                                                                            if (statusx.TRI_ACTUALPRICE != "0")
+                                                                            {
+                                                                                <div class="text-dark font-size-h6 ">
+                                                                                    <a href="#" class="font-weight-bolder text-dark-75 ">
+                                                                                        <del>
+                                                                                            ₱ @statusx.TRI_EXPECTED_AMOUNT
+                                                                                        </del>
+                                                                                    </a>
+                                                                                    <a href="#" class="font-weight-bolder text-danger">&nbsp; ₱ @statusx.TRI_ACTUALPRICE</a>
+                                                                                </div>
+                                                                            }
+                                                                            else
+                                                                            {
+
+                                                                                <div class="text-dark font-size-h6 ">
+                                                                                    ₱ @statusx.TRI_EXPECTED_AMOUNT
+
+                                                                                </div>
+                                                                            }
+
+                                                                        }
+                                                                        <div class="text-dark">Quantity: @statusx.TRI_QUANTITY</div>
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+                                                            if (@statusx.TRI_CUSTREMARKS.Length > 0)
+                                                            {
+                                                                <a class="text-dark-75 font-weight-bold ">Note: @statusx.TRI_CUSTREMARKS</a>
+
+                                                            }
+                                                            else
+                                                            {
+                                                                <a class="text-dark-50 font-weight-bold">No note found.</a>
+
+                                                            }
+                                                            <br />
+                                                        }
+
+
+
+                                                    }
+
+                                                }
+                                            }
+                                            <p class="card font-weight-bold bg-gray-100 p-5">
+                                                <b>Payment Method:</b> @data.TRI_PAYMENT_METHOD
+                                            </p>
+
+
+
+                                        </div>
+                                        <!--eng::Container-->
+
+                                    </div>
+                                    <!--end::Wrapper-->
+
+                                </div>
+                                <!--end::Body-->
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <!-- end panel-body -->
+
+            </div>
+        </div>
+        <br />
+        <div class="separator separator-solid separator-border-2 mb-2"></div>
+        <div class="card font-weight-bold bg-light p-5 mb-2 ">
+            <b>Delivery Option:</b>
+            @data.RTD_TEAMNAME — @data.DASHERNAME
+            <a class=" text-success font-size-sm">
+                Mode of Transfer: @data.TCR_MODEOFTRANSFER
+            </a>
+
+        </div>
+        <div class="card font-weight-bold bg-light p-5 mb-2 text-right">
+            <b>
+
+                @{
+                    double y;
+                    if (data.TCR_PENDINGCOST == null || data.TCR_PENDINGCOST == "")
+                    {
+                        y = 0.00;
+                    }
+                    else { y = Double.Parse(data.TCR_PENDINGCOST.Replace("P", "")); }
+
+                }
+
+                Shopping Order Subtotal:   <a class=" text-success font-size-sm font-weight-bolder">₱ @y.ToString("N2") </a>
+            </b>
+            <p class="text-dark-50 font-italic font-weight-bold">(Excludes item with no budget amount)</p>
+
+
+            <b>
+                @{
+                    double x;
+                    if (data.TCR_SHOPPING_FEE == null || data.TCR_SHOPPING_FEE == "")
+                    {
+                        x = 0.00;
+                    }
+                    else { x = Double.Parse(data.TCR_SHOPPING_FEE.Replace("P", "")); }
+
+                }
+
+                Shopping Fee: <a class=" text-success font-size-sm font-weight-bolder">₱ @x.ToString("N2") </a>
+
+            </b>
+            <p class="text-dark-50 font-italic font-weight-bold">(Amount will be computed upon completion of your shopping order)</p>
+
+            <b>
+                @{
+                    double z;
+                    if (data.TCR_DELIVERYFEE == null || data.TCR_DELIVERYFEE == "")
+                    {
+                        z = 0.00;
+                    }
+                    else { z = Double.Parse(data.TCR_DELIVERYFEE.Replace("P", "")); }
+
+                }
+
+                Delivery Fee: <a class=" text-success font-size-sm font-weight-bolder">₱ @z.ToString("N2") </a>
+
+            </b>
+            <p class="text-dark-50 font-italic font-weight-bold">(Amount will be computed upon completion of your shopping order)</p>
+
+        </div>
+        <div class="card font-weight-bold bg-gray-200 p-5 mb-2 text-right">
+
+            Total Amount: <a class=" text-success font-size-sm font-weight-bolder">₱ @((x + y + z).ToString("N2")) </a>
+            <p class="text-dark-50 font-italic font-weight-bold">(Excludes item with no budget amount)</p>
+          
+        </div>
+            <div class="separator separator-solid separator-border-2 mb-2  separator-success"></div>
+            <br />
+            <br />
+                    }
+            <br />
+
+        </div>
+
+<script>
+    function RefreshPage(queryString) {
+        var newUrl = window.location.origin + window.location.pathname + "?status=" + queryString;
+        window.location.href = newUrl;
+        return false;
+    }
+</script>
